@@ -1,0 +1,79 @@
+mqtt:
+  enabled: false
+
+cameras:
+  ashish_front_door:
+    enabled: true
+    ffmpeg:
+      inputs:
+        - path: rtsp://AshishWar:ashish123@192.168.1.52:554/stream1
+          roles:
+            - detect
+        - path: rtsp://AshishWar:ashish123@192.168.1.52:554/stream2
+          roles:
+            - record
+    detect:
+      enabled: true
+      width: 1280
+      height: 720
+      fps: 5
+    objects:
+      track:
+        - person
+        - car
+        - dog
+        - cat
+    record:
+      enabled: false
+      retain:
+        days: 7
+        mode: motion
+    snapshots:
+      enabled: true
+      retain:
+        default: 10
+        objects:
+          person: 20
+
+detectors:
+  cpu1:
+    type: cpu
+    num_threads: 1
+
+model:
+  path: /config/model_cache/yolov5n-416.onnx
+  input_tensor: nhwc
+  input_pixel_format: bgr
+  width: 416
+  height: 416
+
+motion:
+  threshold: 25
+  contour_area: 100
+  delta_alpha: 0.2
+  frame_alpha: 0.2
+
+record:
+  enabled: true
+  retain:
+    days: 7
+    mode: motion
+
+snapshots:
+  enabled: true
+  retain:
+    default: 10
+    objects:
+      person: 20
+
+birdseye:
+  enabled: true
+  width: 1280
+  height: 720
+  quality: 8
+  mode: objects
+
+logger:
+  default: info
+  logs:
+    frigate.mqtt: error 
