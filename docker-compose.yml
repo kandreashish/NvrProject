@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  frigate:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:stable
+    restart: unless-stopped
+    privileged: true
+    shm_size: "64mb"
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+      - /dev/dri:/dev/dri
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./config:/config
+      - ./media:/media/frigate
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 100mb
+    ports:
+      - "5000:5000"
+      - "1935:1935"
+    environment:
+      FRIGATE_RTSP_PASSWORD: "ashish123"
+    networks:
+      - frigate_network
+
+  # Optional: Add Home Assistant integration
+  # Uncomment if you want to integrate with Home Assistant
+  # homeassistant:
+  #   container_name: homeassistant
+  #   image: ghcr.io/home-assistant/home-assistant:stable
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./homeassistant:/config
+  #     - /etc/localtime:/etc/localtime:ro
+  #   ports:
+  #     - "8123:8123"
+  #   networks:
+  #     - frigate_network
+
+  # Optional: Add MQTT broker for Frigate
+  # Uncomment if you want to use MQTT
+  # mosquitto:
+  #   container_name: mosquitto
+  #   image: eclipse-mosquitto:latest
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./mosquitto/config:/mosquitto/config
+  #     - ./mosquitto/data:/mosquitto/data
+  #     - ./mosquitto/log:/mosquitto/log
+  #   ports:
+  #     - "1883:1883"
+  #     - "9001:9001"
+  #   networks:
+  #     - frigate_network
+
+networks:
+  frigate_network:
+    driver: bridge 

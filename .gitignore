@@ -1,0 +1,59 @@
+# Frigate NVR Git Ignore
+
+# Media files (recordings, snapshots)
+media/
+*.mp4
+*.avi
+*.mkv
+*.mov
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Log files
+*.log
+logs/
+
+# Configuration backups
+backup-*.tar.gz
+frigate-backup-*.tar.gz
+
+# Docker volumes
+volumes/
+
+# Temporary files
+*.tmp
+*.temp
+cache/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Certificate files
+*.pem
+*.key
+*.crt
+*.csr
+
+# Backup files
+*.bak
+*.backup 

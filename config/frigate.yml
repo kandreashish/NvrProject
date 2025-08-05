@@ -1,0 +1,112 @@
+# Frigate Configuration File
+# Optimized for Raspberry Pi
+
+# Database configuration
+database:
+  path: /config/frigate.db
+
+# MQTT configuration (uncomment if using MQTT)
+# mqtt:
+#   host: mosquitto
+#   port: 1883
+#   topic_prefix: frigate
+#   client_id: frigate
+#   user: your_mqtt_user
+#   password: your_mqtt_password
+
+# Cameras configuration
+cameras:
+  # Example camera configuration
+  # Replace with your actual camera details
+  front_door:
+    ffmpeg:
+      inputs:
+        - path: rtsp://username:password@camera_ip:554/stream1
+          roles:
+            - detect
+            - record
+        - path: rtsp://username:password@camera_ip:554/stream2
+          roles:
+            - record
+      output_args:
+        record: -f segment -segment_time 60 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v copy -c:a copy
+    detect:
+      width: 1280
+      height: 720
+      fps: 5
+    objects:
+      track:
+        - person
+        - car
+        - dog
+        - cat
+      filters:
+        person:
+          min_area: 5000
+          max_area: 100000
+          threshold: 0.5
+    record:
+      enabled: true
+      retain:
+        days: 7
+        mode: motion
+    snapshots:
+      enabled: true
+      retain:
+        default: 10
+        objects:
+          person: 20
+
+# Motion detection settings
+motion:
+  threshold: 25
+  contour_area: 100
+  delta_alpha: 0.2
+  frame_alpha: 0.2
+  frame_change_threshold: 0.05
+
+# Object detection settings
+detectors:
+  cpu1:
+    type: cpu
+    num_threads: 1
+  cpu2:
+    type: cpu
+    num_threads: 1
+
+# Model configuration
+model:
+  path: /config/model_cache/yolov5n-416.onnx
+  input_tensor: nhwc
+  input_pixel_format: bgr
+  width: 416
+  height: 416
+
+# Recording settings
+record:
+  enabled: true
+  retain:
+    days: 7
+    mode: motion
+
+# Snapshots settings
+snapshots:
+  enabled: true
+  retain:
+    default: 10
+    objects:
+      person: 20
+
+# Birdseye view settings
+birdseye:
+  enabled: true
+  width: 1280
+  height: 720
+  quality: 8
+  mode: objects
+
+# Logging configuration
+logger:
+  default: info
+  logs:
+    frigate.mqtt: error 
