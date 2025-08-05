@@ -18,7 +18,7 @@ database:
 cameras:
   # Example camera configuration
   # Replace with your actual camera details
-  front_door:
+  ashish_front_door:
     ffmpeg:
       inputs:
         - path: rtsp://AshishWar:ashish123@192.168.1.52:554/stream1
