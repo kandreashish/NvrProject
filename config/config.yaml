@@ -54,7 +54,7 @@ motion:
   frame_alpha: 0.2
 
 record:
-  enabled: true
+  enabled: false
   retain:
     days: 7
     mode: motion
@@ -67,7 +67,7 @@ snapshots:
       person: 20
 
 birdseye:
-  enabled: true
+  enabled: false
   width: 1280
   height: 720
   quality: 8
